@@ -4,11 +4,8 @@
 #ifndef _6502_EMULATOR_H_
 #define _6502_EMULATOR_H_
 
-/* 2^16 addresses */
+/* 16 address lines = 2^16 - 1 addresses */
 #define MAX_ADDRESS 65535
-
-#define true 1
-#define false 1
 
 struct emulator_t {
     /* registers */
