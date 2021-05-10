@@ -27,8 +27,72 @@ void addr_zpiy(struct emulator_t* emu);
 void addr_noop(struct emulator_t* emu);
 
 /* operations */
-void brk(struct emulator_t* emu);
+/* Loads and stores */
 void lda(struct emulator_t* emu);
+void ldy(struct emulator_t* emu);
+void sta(struct emulator_t* emu);
+void stx(struct emulator_t* emu);
+void sty(struct emulator_t* emu);
+void adc(struct emulator_t* emu);
+void sbc(struct emulator_t* emu);
+/* increments and decrements */
+void inc(struct emulator_t* emu);
+void inx(struct emulator_t* emu);
+void iny(struct emulator_t* emu);
+void dec(struct emulator_t* emu);
+void dex(struct emulator_t* emu);
+void dey(struct emulator_t* emu);
+/* shifting and rotating */
+void asl(struct emulator_t* emu);
+void lsr(struct emulator_t* emu);
+void rol(struct emulator_t* emu);
+void ror(struct emulator_t* emu);
+/* logic */
+void op_and(struct emulator_t* emu);
+void ora(struct emulator_t* emu);
+void eor(struct emulator_t* emu);
+/* comparison */
+void cmp(struct emulator_t* emu);
+void cpx(struct emulator_t* emu);
+void cpy(struct emulator_t* emu);
+void bit(struct emulator_t* emu);
+/* branches */
+void bcc(struct emulator_t* emu);
+void bcs(struct emulator_t* emu);
+void bne(struct emulator_t* emu);
+void beq(struct emulator_t* emu);
+void bpl(struct emulator_t* emu);
+void bmi(struct emulator_t* emu);
+void bvc(struct emulator_t* emu);
+void bvs(struct emulator_t* emu);
+/* transferring */
+void tax(struct emulator_t* emu);
+void txa(struct emulator_t* emu);
+void tay(struct emulator_t* emu);
+void tya(struct emulator_t* emu);
+void tsx(struct emulator_t* emu);
+void txs(struct emulator_t* emu);
+/* stack */
+void pha(struct emulator_t* emu);
+void pla(struct emulator_t* emu);
+void php(struct emulator_t* emu);
+void plp(struct emulator_t* emu);
+/* subroutines */
+void jmp(struct emulator_t* emu);
+void jsr(struct emulator_t* emu);
+void rts(struct emulator_t* emu);
+void rti(struct emulator_t* emu);
+/* set and clear ops */
+void clc(struct emulator_t* emu);
+void sec(struct emulator_t* emu);
+void cld(struct emulator_t* emu);
+void sed(struct emulator_t* emu);
+void cli(struct emulator_t* emu);
+void sei(struct emulator_t* emu);
+void clv(struct emulator_t* emu);
+/* misc */
+void nop(struct emulator_t* emu);
+void brk(struct emulator_t* emu);
 
 static opcode_t opcodes[256] = {
     /* 00-0F */

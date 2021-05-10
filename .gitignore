@@ -1,0 +1,9 @@
+# exe name
+6502_run
+
+# datasheets
+*.pdf
+
+# assembly testing
+example.s
+example
