@@ -7,3 +7,9 @@
 # assembly testing
 example.s
 example
+
+# cmake build directory
+build/
+
+# macOS debug symbols
+*.dSYM
