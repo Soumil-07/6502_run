@@ -6,18 +6,20 @@
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define RSB_LO 0xffc
 #define RSB_HI 0xffd
+/* 0b00001000 - the bit 5 is always set */
+#define SR_INITIAL 0x8
 
 /* printing 0b hack */
 #define BYTE_TO_BINARY_PATTERN "%c%c%c%c%c%c%c%c"
 #define BYTE_TO_BINARY(byte)  \
-  (byte & 0x80 ? '1' : '0'), \
-  (byte & 0x40 ? '1' : '0'), \
-  (byte & 0x20 ? '1' : '0'), \
-  (byte & 0x10 ? '1' : '0'), \
-  (byte & 0x08 ? '1' : '0'), \
-  (byte & 0x04 ? '1' : '0'), \
+  (byte & 0x01 ? '1' : '0'), \
   (byte & 0x02 ? '1' : '0'), \
-  (byte & 0x01 ? '1' : '0') 
+  (byte & 0x04 ? '1' : '0'), \
+  (byte & 0x08 ? '1' : '0'), \
+  (byte & 0x10 ? '1' : '0'), \
+  (byte & 0x20 ? '1' : '0'), \
+  (byte & 0x40 ? '1' : '0'), \
+  (byte & 0x80 ? '1' : '0') 
 
 struct emulator_t* emu_init(FILE* f)
 {
@@ -42,6 +44,7 @@ struct emulator_t* emu_init(FILE* f)
 
     struct emulator_t* emu = (struct emulator_t*) malloc(sizeof(struct emulator_t));
     emu->sp = 0xff;
+    emu->sr = SR_INITIAL;
     emu->__buf = buf;
     emu->__bufsize = bufsize;
 

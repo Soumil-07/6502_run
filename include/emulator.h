@@ -21,6 +21,8 @@ struct emulator_t {
     int __bufsize;
     /* the operand set by the various addressing modes */
     uint8_t __operand;
+    /* the address set by the various addressing modes */
+    uint16_t __addr;
 
 } emulator_t;
 

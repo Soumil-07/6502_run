@@ -213,7 +213,7 @@ static opcode_t opcodes[256] = {
     {},
     {},
     {},
-    {},
+    {addr_imm, adc},
     {},
     {},
     {},
