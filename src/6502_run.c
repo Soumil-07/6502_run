@@ -9,7 +9,7 @@ int main(int argc, char** argv)
 {
     if (argc < 2)
     {
-        printf("USAGE: 6502_run FILE...");
+        printf("USAGE: 6502_run FILE...\n");
         return 1;
     }
 

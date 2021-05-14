@@ -30,7 +30,7 @@ struct emulator_t* emu_init(FILE* f)
 
     if (bufsize < MAX_ADDRESS + 1)
     {
-        printf("the input file should be %d bytes long", MAX_ADDRESS + 1);
+        printf("the input file should be %d bytes long\n", MAX_ADDRESS + 1);
         exit(1);
     }
     buf = (char*) malloc(bufsize);

@@ -24,7 +24,7 @@ struct emulator_t {
     /* the address set by the various addressing modes */
     uint16_t __addr;
 
-} emulator_t;
+};
 
 struct emulator_t* emu_init(FILE* f);
 
