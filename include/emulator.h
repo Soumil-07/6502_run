@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #ifndef _6502_EMULATOR_H_
 #define _6502_EMULATOR_H_
@@ -23,6 +24,8 @@ struct emulator_t {
     uint8_t __operand;
     /* the address set by the various addressing modes */
     uint16_t __addr;
+    /* whether an address was set */
+    bool __addr_set;
 
 };
 

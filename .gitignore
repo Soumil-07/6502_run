@@ -13,3 +13,6 @@ build/
 
 # macOS debug symbols
 *.dSYM
+
+# lsp-config
+compile_commands.json
