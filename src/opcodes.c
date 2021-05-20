@@ -103,9 +103,13 @@ void tay(struct emulator_t* emu) { emu->y = emu->a; }
 
 void tya(struct emulator_t* emu) { emu->a = emu->y; }
 
-void tsx(struct emulator_t* emu) { /* TODO */ }
+void tsx(struct emulator_t* emu)
+{ /* TODO */
+}
 
-void txs(struct emulator_t* emu) { /* TODO */ }
+void txs(struct emulator_t* emu)
+{ /* TODO */
+}
 
 void adc(struct emulator_t* emu)
 {
@@ -118,7 +122,9 @@ void adc(struct emulator_t* emu)
 	emu->sr |= CARRY_SET;
 }
 
-void sbc(struct emulator_t* emu) { /* TODO */ }
+void sbc(struct emulator_t* emu)
+{ /* TODO */
+}
 
 void inc(struct emulator_t* emu) { emu->__buf[emu->__addr]++; }
 
@@ -176,6 +182,26 @@ void cmp(struct emulator_t* emu)
 	emu->sr |= SET_EQ;
     else
 	emu->sr |= SET_LT;
+}
+
+void pha(struct emulator_t* emu)
+{
+    if (emu->sp == 0x0)
+    {
+	printf("fatal: stack overflow\n");
+	exit(EXIT_FAILURE);
+    }
+    emu->__buf[stp_addr(emu->sp--)] = emu->a;
+}
+
+void pla(struct emulator_t* emu)
+{
+    if (emu->sp == 0xff)
+    {
+	printf("fatal: stack empty\n");
+	exit(EXIT_FAILURE);
+    }
+    emu->a = emu->__buf[stp_addr(++emu->sp)];
 }
 
 void brk(struct emulator_t* emu)

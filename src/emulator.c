@@ -49,7 +49,6 @@ struct emulator_t* emu_init(FILE* f)
     /* get the starting vector from the reset bits and jump to it */
     assert(emu->__bufsize > 0xfffd && "check binary size");
     uint16_t st_vec = combine_le(emu->__buf[RSB_HI], emu->__buf[RSB_LO]);
-    printf("read reset vector: 0x%d", st_vec);
     emu->pc = st_vec;
 
     return emu;
@@ -111,3 +110,4 @@ void emu_display_state(struct emulator_t* emu)
 
 uint16_t combine_le(uint8_t lo, uint8_t hi) { return (hi << 8) | lo; }
 
+uint16_t stp_addr(uint8_t addr) { return combine_le(addr, 0x1); }
