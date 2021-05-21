@@ -3,10 +3,10 @@
 
 #include "emulator.h"
 
-typedef struct 
+typedef struct
 {
-    void (*addr_mode) (struct emulator_t*);
-    void (*run_op) (struct emulator_t*);
+    void (*addr_mode)(struct emulator_t*);
+    void (*run_op)(struct emulator_t*);
 } opcode_t;
 
 /* addressing modes */
@@ -30,6 +30,7 @@ void addr_noop(struct emulator_t* emu);
 /* Loads and stores */
 void lda(struct emulator_t* emu);
 void ldy(struct emulator_t* emu);
+void ldx(struct emulator_t* emu);
 void sta(struct emulator_t* emu);
 void stx(struct emulator_t* emu);
 void sty(struct emulator_t* emu);
@@ -132,7 +133,7 @@ static opcode_t opcodes[256] = {
     {},
 
     /* 20-2F */
-    {},
+    {addr_abs, jsr},
     {addr_zpix, op_and},
     {},
     {},
@@ -180,7 +181,7 @@ static opcode_t opcodes[256] = {
     {},
     {addr_acc, lsr},
     {},
-    {},
+    {addr_abs, jmp},
     {},
     {},
     {},
@@ -202,9 +203,9 @@ static opcode_t opcodes[256] = {
     {},
     {},
     {},
-    
+
     /* 60-6F */
-    {},
+    {addr_noop, rts},
     {},
     {},
     {},
@@ -216,7 +217,7 @@ static opcode_t opcodes[256] = {
     {addr_imm, adc},
     {},
     {},
-    {},
+    {addr_absind, jmp},
     {},
     {},
     {},
@@ -238,7 +239,7 @@ static opcode_t opcodes[256] = {
     {},
     {},
     {},
-    
+
     /* 80-8F */
     {},
     {},
@@ -278,7 +279,7 @@ static opcode_t opcodes[256] = {
     /* A0-AF */
     {},
     {},
-    {},
+    {addr_imm, ldx},
     {},
     {},
     {},
@@ -318,6 +319,42 @@ static opcode_t opcodes[256] = {
     {},
     {},
     {addr_abs, cmp},
+    {},
+    {},
+    {},
+    {addr_imm, cmp},
+    {addr_imp, dex},
+    {},
+    {},
+    {},
+    {},
+    {},
+
+    /* D0-Df */
+    {addr_rel, bne},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+
+    /* E0-Ef */
+    {addr_imm, cpx},
+    {},
+    {},
+    {},
+    {},
+    {},
     {},
     {},
     {},

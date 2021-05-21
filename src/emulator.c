@@ -4,8 +4,8 @@
 #include <stdlib.h>
 
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
-#define RSB_LO 0xffc
-#define RSB_HI 0xffd
+#define RSB_LO 0xfffc
+#define RSB_HI 0xfffd
 /* 0b00100000 - the bit 5 is always set */
 #define SR_INITIAL 0x20
 
@@ -48,7 +48,7 @@ struct emulator_t* emu_init(FILE* f)
 
     /* get the starting vector from the reset bits and jump to it */
     assert(emu->__bufsize > 0xfffd && "check binary size");
-    uint16_t st_vec = combine_le(emu->__buf[RSB_HI], emu->__buf[RSB_LO]);
+    uint16_t st_vec = combine_le(emu->__buf[RSB_LO], emu->__buf[RSB_HI]);
     emu->pc = st_vec;
 
     return emu;
