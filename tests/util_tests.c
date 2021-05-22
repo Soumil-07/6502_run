@@ -7,10 +7,14 @@
 #define TEST_COMBINE_LE(lo, hi, expected)                                      \
     ck_assert_uint_eq(combine_le(lo, hi), expected);
 
+#define TEST_STP_ADDR(addr, expected)                                          \
+    ck_assert_uint_eq(stp_addr(addr), expected)
+
 START_TEST(test_utils)
 {
-    ck_assert_uint_eq(stp_addr(0xff), 0x01ff);
-    ck_assert_uint_eq(stp_addr(0xfe), 0x01fe);
+    TEST_STP_ADDR(0xff, 0x01ff);
+    TEST_STP_ADDR(0x0f, 0x010f);
+    TEST_STP_ADDR(0xf0, 0x01f0);
     TEST_COMBINE_LE(0xff, 0xab, 0xabff);
     TEST_COMBINE_LE(0x0f, 0xab, 0xab0f);
     TEST_COMBINE_LE(0x00, 0xab, 0xab00);

@@ -171,7 +171,12 @@ void lsr(struct emulator_t* emu)
 	emu->a = (uint8_t)shifted;
 }
 
+
 void op_and(struct emulator_t* emu) { emu->a &= emu->__operand; }
+
+void or (struct emulator_t * emu) { emu->a |= emu->__operand; }
+
+void eor(struct emulator_t* emu) { emu->a ^= emu->__operand; }
 
 void cmp(struct emulator_t* emu)
 {
@@ -201,6 +206,22 @@ void cpy(struct emulator_t* emu)
 	emu->sr |= SET_EQ;
     else
 	emu->sr |= SET_LT;
+}
+
+void bcc(struct emulator_t* emu)
+{
+    if ((emu->sr & 0x1) == 0)
+    {
+	emu->pc = emu->__addr;
+    }
+}
+
+void bcs(struct emulator_t* emu)
+{
+    if ((emu->sr & 0x1) != 0)
+    {
+	emu->pc = emu->__addr;
+    }
 }
 
 void bne(struct emulator_t* emu)
