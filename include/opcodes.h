@@ -7,6 +7,7 @@ typedef struct
 {
     void (*addr_mode)(struct emulator_t*);
     void (*run_op)(struct emulator_t*);
+    uint64_t clc;
 } opcode_t;
 
 /* addressing modes */

@@ -18,6 +18,8 @@ struct emulator_t
     uint8_t sp;
     uint8_t sr;
 
+    uint64_t clc;
+
     /* internal props */
     char* __buf;
     int __bufsize;

@@ -10,17 +10,27 @@
 
 void addr_noop(struct emulator_t* emu) {}
 
-void addr_acc(struct emulator_t* emu) { emu->__operand = emu->a; }
+void addr_acc(struct emulator_t* emu) {
+	emu->__operand = emu->a;
+	emu-> clc += 2;
+}
 
-void addr_imp(struct emulator_t* emu) {}
+void addr_imp(struct emulator_t* emu) {
+	emu->clc += 2;
+}
 
-void addr_imm(struct emulator_t* emu) { emu->__operand = emu_read8(emu); }
+void addr_imm(struct emulator_t* emu) {
+	emu->__operand = emu_read8(emu); 
+	emu->clc += 2;
+}
+
 
 void addr_abs(struct emulator_t* emu)
 {
     emu->__addr_set = true;
     emu->__addr = emu_read16(emu);
     emu->__operand = emu->__buf[emu->__addr];
+    emu->clc += 2;
 }
 
 void addr_zp(struct emulator_t* emu)

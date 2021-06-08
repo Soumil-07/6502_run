@@ -50,6 +50,8 @@ struct emulator_t* emu_init(FILE* f)
     assert(emu->__bufsize > 0xfffd && "check binary size");
     uint16_t st_vec = combine_le(emu->__buf[RSB_LO], emu->__buf[RSB_HI]);
     emu->pc = st_vec;
+    /* the 6502 takes 7 clock cycles to initialize */
+    emu->clc = 7;
 
     return emu;
 }
@@ -71,6 +73,7 @@ void emu_run(struct emulator_t* emu, int debug)
 	emu->__addr_set = 0;
 	op.addr_mode(emu);
 	op.run_op(emu);
+	emu->clc += op.clc;
 
 	/* in "debug" mode, wait for a keypress before continuing */
 	if (debug)
@@ -104,8 +107,9 @@ void emu_display_state(struct emulator_t* emu)
 {
     printf(
         "A=$%02x X=$%02x Y=$%02x PC=$%04x SP=$%04x SR=0b" BYTE_TO_BINARY_PATTERN
-        "\n",
-        emu->a, emu->x, emu->y, emu->pc, emu->sp, BYTE_TO_BINARY(emu->sr));
+        " CLC=%llu\n",
+        emu->a, emu->x, emu->y, emu->pc, emu->sp, BYTE_TO_BINARY(emu->sr),
+        emu->clc);
 }
 
 uint16_t combine_le(uint8_t lo, uint8_t hi) { return (hi << 8) | lo; }

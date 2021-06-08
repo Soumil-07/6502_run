@@ -1,5 +1,6 @@
 #include "emulator.h"
 #include <stdio.h>
+#include <string.h>
 
 #ifndef DEBUG
 #define DEBUG 0
@@ -7,6 +8,7 @@
 
 int main(int argc, char** argv)
 {
+    char* filename;
     if (argc < 2)
     {
 	printf("USAGE: 6502_run FILE...\n");

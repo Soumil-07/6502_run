@@ -13,6 +13,10 @@ build/
 
 # macOS debug symbols
 *.dSYM
+.DS_Store
 
 # lsp-config
 compile_commands.json
+
+# clangd caches
+.cache
