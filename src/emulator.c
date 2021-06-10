@@ -115,3 +115,10 @@ void emu_display_state(struct emulator_t* emu)
 uint16_t combine_le(uint8_t lo, uint8_t hi) { return (hi << 8) | lo; }
 
 uint16_t stp_addr(uint8_t addr) { return combine_le(addr, 0x1); }
+
+uint8_t lrotate(uint8_t n)
+{
+    return n << 1 | n >> 7;
+}
+
+uint8_t rrotate(uint8_t n);

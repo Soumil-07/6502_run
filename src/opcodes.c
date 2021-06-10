@@ -181,6 +181,21 @@ void lsr(struct emulator_t* emu)
 	emu->a = (uint8_t)shifted;
 }
 
+void rol(struct emulator_t* emu)
+{
+    uint8_t shifted = lrotate(emu->__operand);
+    /* get the right-most bit */
+    if (emu->__operand & 0x1)
+	emu->sr |= CARRY_SET;
+    else
+	emu->sr &= 0xfe;
+
+    /* asl either modifies addresses directly, or the accumulator */
+    if (emu->__addr_set)
+	emu->__buf[emu->__addr] = (uint8_t)shifted;
+    else
+	emu->a = (uint8_t)shifted;
+}
 
 void op_and(struct emulator_t* emu) { emu->a &= emu->__operand; }
 

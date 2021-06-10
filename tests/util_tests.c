@@ -10,6 +10,8 @@
 #define TEST_STP_ADDR(addr, expected)                                          \
     ck_assert_uint_eq(stp_addr(addr), expected)
 
+#define TEST_LROTATE(n, expected) ck_assert_uint_eq(lrotate(n), expected)
+
 START_TEST(test_utils)
 {
     TEST_STP_ADDR(0xff, 0x01ff);
@@ -20,6 +22,9 @@ START_TEST(test_utils)
     TEST_COMBINE_LE(0x00, 0xab, 0xab00);
     TEST_COMBINE_LE(0xff, 0x0b, 0x0bff);
     TEST_COMBINE_LE(0xff, 0x00, 0x00ff);
+    TEST_LROTATE(0b100, 0b1000);
+    TEST_LROTATE(0b10101110, 0b01011101);
+    TEST_LROTATE(0b10111, 0b101110);
 }
 END_TEST
 

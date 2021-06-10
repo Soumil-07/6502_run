@@ -144,7 +144,7 @@ static opcode_t opcodes[256] = {
     {},
     {},
     {addr_imm, op_and},
-    {},
+    {addr_acc, rol},
     {},
     {},
     {addr_abs, op_and},

@@ -18,6 +18,7 @@ struct emulator_t
     uint8_t sp;
     uint8_t sr;
 
+    /* the number of clock cycles */
     uint64_t clc;
 
     /* internal props */
@@ -43,5 +44,8 @@ void emu_display_state(struct emulator_t* emu);
 uint16_t combine_le(uint8_t lo, uint8_t hi);
 
 uint16_t stp_addr(uint8_t);
+
+uint8_t lrotate(uint8_t n);
+uint8_t rrotate(uint8_t n);
 
 #endif // _6502_EMULATOR_H_
