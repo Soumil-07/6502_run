@@ -35,6 +35,8 @@ struct emulator_t
 struct emulator_t* emu_init(FILE* f);
 
 void emu_run(struct emulator_t* emu, int step);
+void emu_irqb(struct emulator_t* emu);
+void emu_nmib(struct emulator_t* emu);
 
 uint8_t emu_read8(struct emulator_t* emu);
 uint16_t emu_read16(struct emulator_t* emu);

@@ -6,6 +6,8 @@
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define RSB_LO 0xfffc
 #define RSB_HI 0xfffd
+#define NMIB_LO 0xfffa
+#define NMIB_HI 0xfffb
 /* 0b00100000 - the bit 5 is always set */
 #define SR_INITIAL 0x20
 
@@ -81,10 +83,30 @@ void emu_run(struct emulator_t* emu, int debug)
 	    emu_display_state(emu);
 	    char c;
 	    scanf("%c", &c);
+	    if (c == 'i')
+	    {
+		emu_nmib(emu);
+	    }
 	}
     }
 
     emu_display_state(emu);
+}
+
+void emu_irqb(struct emulator_t* emu)
+{
+    // Push the PC and SR onto the stack
+    emu->__buf[stp_addr(emu->sp--)] = emu->pc;
+    emu->__buf[stp_addr(emu->sp--)] = emu->sr;
+}
+
+void emu_nmib(struct emulator_t* emu)
+{
+    // Push the PC and SR onto the stack
+    emu->__buf[stp_addr(emu->sp--)] = emu->pc;
+    emu->__buf[stp_addr(emu->sp--)] = emu->sr;
+
+    emu->pc = combine_le(emu->__buf[NMIB_LO], emu->__buf[NMIB_HI]);
 }
 
 uint8_t emu_read8(struct emulator_t* emu)
@@ -116,9 +138,6 @@ uint16_t combine_le(uint8_t lo, uint8_t hi) { return (hi << 8) | lo; }
 
 uint16_t stp_addr(uint8_t addr) { return combine_le(addr, 0x1); }
 
-uint8_t lrotate(uint8_t n)
-{
-    return n << 1 | n >> 7;
-}
+uint8_t lrotate(uint8_t n) { return n << 1 | n >> 7; }
 
 uint8_t rrotate(uint8_t n);

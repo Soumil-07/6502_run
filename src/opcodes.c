@@ -3,27 +3,30 @@
 #include <stdlib.h>
 
 #define CARRY_SET 0x1
-#define CARRY_RESET 0xfe
+#define CARRY_RESET ~(CARRY_SET)
 #define SET_LT 0x80 // 0b10000000
 #define SET_EQ 0x3  // 0b00000011
 #define SET_GT 0x1  // 0b00000001
+#define SET_INT 0x4 // 0b00000100
+#define CLEAR_INT ~(SET_INT)
+
+#define popstack() emu->__buf[stp_addr(++emu->sp)]
 
 void addr_noop(struct emulator_t* emu) {}
 
-void addr_acc(struct emulator_t* emu) {
-	emu->__operand = emu->a;
-	emu-> clc += 2;
+void addr_acc(struct emulator_t* emu)
+{
+    emu->__operand = emu->a;
+    emu->clc += 2;
 }
 
-void addr_imp(struct emulator_t* emu) {
-	emu->clc += 2;
-}
+void addr_imp(struct emulator_t* emu) { emu->clc += 2; }
 
-void addr_imm(struct emulator_t* emu) {
-	emu->__operand = emu_read8(emu); 
-	emu->clc += 2;
+void addr_imm(struct emulator_t* emu)
+{
+    emu->__operand = emu_read8(emu);
+    emu->clc += 2;
 }
-
 
 void addr_abs(struct emulator_t* emu)
 {
@@ -298,7 +301,7 @@ void pla(struct emulator_t* emu)
 	printf("fatal: stack empty\n");
 	exit(EXIT_FAILURE);
     }
-    emu->a = emu->__buf[stp_addr(++emu->sp)];
+    emu->a = popstack();
 }
 
 void jmp(struct emulator_t* emu) { emu->pc = emu->__addr; }
@@ -323,9 +326,21 @@ void rts(struct emulator_t* emu)
     emu->pc = prev_addr;
 }
 
-void clc(struct emulator_t* emu) { emu->sr |= CARRY_SET; }
+void clc(struct emulator_t* emu) { emu->sr &= CARRY_RESET; }
 
-void sec(struct emulator_t* emu) { emu->sr &= CARRY_RESET; }
+void sec(struct emulator_t* emu) { emu->sr |= CARRY_SET; }
+
+// interrupts
+void cli(struct emulator_t* emu) { emu->sr &= CLEAR_INT; }
+
+void sei(struct emulator_t* emu) { emu->sr |= SET_INT; }
+
+void rti(struct emulator_t* emu)
+{
+    // SR and PC are first popped off the stack
+    emu->sr = popstack();
+    emu->pc = popstack();
+}
 
 void brk(struct emulator_t* emu)
 {
