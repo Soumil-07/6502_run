@@ -8,7 +8,7 @@
 #define RSB_HI 0xfffd
 #define NMIB_LO 0xfffa
 #define NMIB_HI 0xfffb
-/* 0b00100000 - the bit 5 is always set */
+/* 0b00100000 - the bit 6 is always set */
 #define SR_INITIAL 0x20
 
 /* printing 0b hack */
@@ -58,39 +58,34 @@ struct emulator_t* emu_init(FILE* f)
     return emu;
 }
 
+void emu_step(struct emulator_t* emu)
+{
+    uint8_t opcode = emu_read8(emu);
+    opcode_t op = opcodes[opcode];
+
+    if (op.run_op == 0x0)
+    {
+	printf("the opcode %02x is not supported currently\n", opcode);
+	exit(1);
+    }
+
+    emu->__addr_set = 0;
+    // setup the operand based on the addr mode
+    op.addr_mode(emu);
+    op.run_op(emu);
+    emu->clc += op.clc;
+}
+
 void emu_run(struct emulator_t* emu, int debug)
 {
     while (emu->pc < MAX_ADDRESS)
     {
-	uint8_t opcode = emu_read8(emu);
-	opcode_t op = opcodes[opcode];
-
-	if (op.run_op == 0x0)
+	emu_step(emu);
+	if (emu->sr & 0x10)
 	{
-	    printf("the opcode %02x is not supported currently\n", opcode);
-	    emu_display_state(emu);
-	    exit(1);
-	}
-
-	emu->__addr_set = 0;
-	op.addr_mode(emu);
-	op.run_op(emu);
-	emu->clc += op.clc;
-
-	/* in "debug" mode, wait for a keypress before continuing */
-	if (debug)
-	{
-	    emu_display_state(emu);
-	    char c;
-	    scanf("%c", &c);
-	    if (c == 'i')
-	    {
-		emu_nmib(emu);
-	    }
+	    exit(EXIT_SUCCESS);
 	}
     }
-
-    emu_display_state(emu);
 }
 
 void emu_irqb(struct emulator_t* emu)
@@ -123,15 +118,6 @@ uint8_t emu_read8(struct emulator_t* emu)
 uint16_t emu_read16(struct emulator_t* emu)
 {
     return combine_le(emu_read8(emu), emu_read8(emu));
-}
-
-void emu_display_state(struct emulator_t* emu)
-{
-    printf(
-        "A=$%02x X=$%02x Y=$%02x PC=$%04x SP=$%04x SR=0b" BYTE_TO_BINARY_PATTERN
-        " CLC=%llu\n",
-        emu->a, emu->x, emu->y, emu->pc, emu->sp, BYTE_TO_BINARY(emu->sr),
-        emu->clc);
 }
 
 uint16_t combine_le(uint8_t lo, uint8_t hi) { return (hi << 8) | lo; }

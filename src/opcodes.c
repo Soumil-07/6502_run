@@ -4,10 +4,11 @@
 
 #define CARRY_SET 0x1
 #define CARRY_RESET ~(CARRY_SET)
-#define SET_LT 0x80 // 0b10000000
-#define SET_EQ 0x3  // 0b00000011
-#define SET_GT 0x1  // 0b00000001
-#define SET_INT 0x4 // 0b00000100
+#define SET_LT 0x80
+#define SET_EQ 0x3
+#define SET_GT 0x1
+#define SET_INT 0x4
+#define SET_BRK 0x10
 #define CLEAR_INT ~(SET_INT)
 
 #define popstack() emu->__buf[stp_addr(++emu->sp)]
@@ -342,8 +343,6 @@ void rti(struct emulator_t* emu)
     emu->pc = popstack();
 }
 
-void brk(struct emulator_t* emu)
-{
-    emu_display_state(emu);
-    exit(0);
+void brk(struct emulator_t* emu) {
+    emu->sr |= SET_BRK;
 }
