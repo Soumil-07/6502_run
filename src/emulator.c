@@ -30,7 +30,7 @@ struct emulator_t* emu_init(FILE* f)
     if (bufsize < MAX_ADDRESS + 1)
     {
 	printf("the input file should be %d bytes long\n", MAX_ADDRESS + 1);
-	exit(1);
+	exit(EXIT_FAILURE);
     }
     buf = (char*)malloc(bufsize);
     rewind(f);
@@ -38,7 +38,7 @@ struct emulator_t* emu_init(FILE* f)
     if (fread(buf, bufsize, 1, f) != 1)
     {
 	perror("fread");
-	exit(1);
+	exit(EXIT_FAILURE);
     }
 
     struct emulator_t* emu =
@@ -66,7 +66,7 @@ void emu_step(struct emulator_t* emu)
     if (op.run_op == 0x0)
     {
 	printf("the opcode %02x is not supported currently\n", opcode);
-	exit(1);
+	exit(EXIT_FAILURE);
     }
 
     emu->__addr_set = 0;
@@ -110,7 +110,7 @@ uint8_t emu_read8(struct emulator_t* emu)
     if (emu->pc == MAX_ADDRESS)
     {
 	printf("eof\n");
-	exit(1);
+	exit(EXIT_FAILURE);
     }
     return emu->__buf[emu->pc++];
 }
