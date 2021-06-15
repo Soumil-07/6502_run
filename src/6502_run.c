@@ -46,15 +46,16 @@ int main(int argc, char** argv)
     while (emu->pc < MAX_ADDRESS)
     {
 	emu_step(emu);
+	// check if the BRK flag was set
+	if (emu->sr & 0x10)
+	{
+	    break;
+	}
+
 	if (DEBUG)
 	{
 	    char c;
 	    emu_display_state(emu);
-	    // check if the BRK flag was set
-	    if (emu->sr & 0x10)
-	    {
-		goto cleanup;
-	    }
 
 	    scanf("%c", &c);
 	    if (c == 'i')
@@ -65,8 +66,6 @@ int main(int argc, char** argv)
     }
 
     emu_display_state(emu);
-
-cleanup:
     fclose(fp);
     exit(EXIT_SUCCESS);
 }
