@@ -95,6 +95,23 @@ void clv(struct emulator_t* emu);
 /* misc */
 void nop(struct emulator_t* emu);
 void brk(struct emulator_t* emu);
+/* memory bits */
+void rmb0(struct emulator_t* emu);
+void rmb1(struct emulator_t* emu);
+void rmb2(struct emulator_t* emu);
+void rmb3(struct emulator_t* emu);
+void rmb4(struct emulator_t* emu);
+void rmb5(struct emulator_t* emu);
+void rmb6(struct emulator_t* emu);
+void rmb7(struct emulator_t* emu);
+void smb0(struct emulator_t* emu);
+void smb1(struct emulator_t* emu);
+void smb2(struct emulator_t* emu);
+void smb3(struct emulator_t* emu);
+void smb4(struct emulator_t* emu);
+void smb5(struct emulator_t* emu);
+void smb6(struct emulator_t* emu);
+void smb7(struct emulator_t* emu);
 
 static opcode_t opcodes[256] = {
     /* 00-0F */
@@ -224,22 +241,22 @@ static opcode_t opcodes[256] = {
     {},
 
     /* 70-7F */
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
+    {rmb0, addr_zp},
+    {rmb1, addr_zp},
+    {rmb2, addr_zp},
+    {rmb3, addr_zp},
+    {rmb4, addr_zp},
+    {rmb5, addr_zp},
+    {rmb6, addr_zp},
+    {rmb7, addr_zp},
+    {smb0, addr_zp},
+    {smb1, addr_zp},
+    {smb2, addr_zp},
+    {smb3, addr_zp},
+    {smb4, addr_zp},
+    {smb5, addr_zp},
+    {smb6, addr_zp},
+    {smb7, addr_zp},
 
     /* 80-8F */
     {},

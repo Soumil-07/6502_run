@@ -343,6 +343,84 @@ void rti(struct emulator_t* emu)
     emu->pc = popstack();
 }
 
-void brk(struct emulator_t* emu) {
-    emu->sr |= SET_BRK;
+void rmb0(struct emulator_t* emu)
+{
+    emu->__buf[emu->__addr] = emu->__operand &= 0xfe;
 }
+
+void rmb1(struct emulator_t* emu)
+{
+    emu->__buf[emu->__addr] = emu->__operand &= 0xfd;
+}
+
+void rmb2(struct emulator_t* emu)
+{
+    emu->__buf[emu->__addr] = emu->__operand &= 0xfb;
+}
+
+void rmb3(struct emulator_t* emu)
+{
+    emu->__buf[emu->__addr] = emu->__operand &= 0xf7;
+}
+
+void rmb4(struct emulator_t* emu)
+{
+    emu->__buf[emu->__addr] = emu->__operand &= 0xef;
+}
+
+void rmb5(struct emulator_t* emu)
+{
+    emu->__buf[emu->__addr] = emu->__operand &= 0xdf;
+}
+
+void rmb6(struct emulator_t* emu)
+{
+    emu->__buf[emu->__addr] = emu->__operand &= 0xbf;
+}
+
+void rmb7(struct emulator_t* emu)
+{
+    emu->__buf[emu->__addr] = emu->__operand &= 0x7f;
+}
+
+void rmb0(struct emulator_t* emu)
+{
+    emu->__buf[emu->__addr] = emu->__operand &= 0xfe;
+}
+
+void smb1(struct emulator_t* emu)
+{
+    emu->__buf[emu->__addr] = emu->__operand &= ~0xfd;
+}
+
+void smb2(struct emulator_t* emu)
+{
+    emu->__buf[emu->__addr] = emu->__operand &= ~0xfb;
+}
+
+void smb3(struct emulator_t* emu)
+{
+    emu->__buf[emu->__addr] = emu->__operand &= ~0xf7;
+}
+
+void smb4(struct emulator_t* emu)
+{
+    emu->__buf[emu->__addr] = emu->__operand &= ~0xef;
+}
+
+void smb5(struct emulator_t* emu)
+{
+    emu->__buf[emu->__addr] = emu->__operand &= ~0xdf;
+}
+
+void smb6(struct emulator_t* emu)
+{
+    emu->__buf[emu->__addr] = emu->__operand &= ~0xbf;
+}
+
+void smb7(struct emulator_t* emu)
+{
+    emu->__buf[emu->__addr] = emu->__operand &= ~0x7f;
+}
+
+void brk(struct emulator_t* emu) { emu->sr |= SET_BRK; }
