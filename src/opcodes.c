@@ -203,7 +203,7 @@ void rol(struct emulator_t* emu)
 
 void op_and(struct emulator_t* emu) { emu->a &= emu->__operand; }
 
-void or (struct emulator_t * emu) { emu->a |= emu->__operand; }
+void ora(struct emulator_t * emu) { emu->a |= emu->__operand; }
 
 void eor(struct emulator_t* emu) { emu->a ^= emu->__operand; }
 
@@ -383,9 +383,9 @@ void rmb7(struct emulator_t* emu)
     emu->__buf[emu->__addr] = emu->__operand &= 0x7f;
 }
 
-void rmb0(struct emulator_t* emu)
+void smb0(struct emulator_t* emu)
 {
-    emu->__buf[emu->__addr] = emu->__operand &= 0xfe;
+    emu->__buf[emu->__addr] = emu->__operand &= ~0xfd;
 }
 
 void smb1(struct emulator_t* emu)
