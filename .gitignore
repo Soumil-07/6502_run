@@ -20,3 +20,6 @@ compile_commands.json
 
 # clangd caches
 .cache
+
+# VSCode config directory
+.vscode
