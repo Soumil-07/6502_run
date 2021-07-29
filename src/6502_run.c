@@ -1,11 +1,8 @@
 #include "emulator.h"
+#include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#ifndef DEBUG
-#define DEBUG 0
-#endif // DEBUG
 
 #define MAX_ADDRESS 65535
 /* printing 0b hack */
@@ -25,16 +22,21 @@ void emu_display_state(struct emulator_t* emu)
         emu->clc);
 }
 
+void parseopt(int argc, char** argv, char** filename, int* debug);
+
 int main(int argc, char** argv)
 {
     char* filename;
+    int debug;
     if (argc < 2)
     {
 	printf("USAGE: 6502_run FILE...\n");
 	return 1;
     }
 
-    FILE* fp = fopen(argv[1], "rb");
+    parseopt(argc, argv, &filename, &debug);
+
+    FILE* fp = fopen(filename, "rb");
     if (fp == NULL)
     {
 	perror("fopen");
@@ -52,7 +54,7 @@ int main(int argc, char** argv)
 	    break;
 	}
 
-	if (DEBUG)
+	if (debug)
 	{
 	    char c;
 	    emu_display_state(emu);
@@ -68,4 +70,32 @@ int main(int argc, char** argv)
     emu_display_state(emu);
     fclose(fp);
     exit(EXIT_SUCCESS);
+}
+
+void parseopt(int argc, char** argv, char** filename, int* debug)
+{
+    *debug = 0;
+    if (argc == 2)
+    {
+	*filename = argv[1];
+	return;
+    }
+
+    if (strcmp(argv[1], "-d") == 0)
+    {
+	*debug = 1;
+	*filename = argv[2];
+    }
+
+    else if (strcmp(argv[2], "-d") == 0)
+    {
+	*debug = 1;
+	*filename = argv[1];
+    }
+
+    else
+    {
+	printf("unexpected number of arguments: %d\n", argc - 1);
+	exit(EXIT_FAILURE);
+    }
 }
